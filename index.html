@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Boîte à musique pour les calos !">
+    <meta name="author" content="William BOFFY">
+
+    <title>LECD - Music box</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/stylish-portfolio.css" rel="stylesheet">
+    
+    <!-- Toggle -->
+    <link href="css/toggle.css" rel="stylesheet">
+    
+    <!-- Mon CSS -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        /*Pour gestion en javascript*/
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle" data-toggle="tooltip" data-placement="bottom" title="réglages"><i class="fa fa-cog" aria-hidden="true"></i></a>
+    <nav id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
+            <li id="mainTitle" class="sidebar-brand">
+                <a href="#top" onclick="loadSettings();$('#settings').modal('show');">Main Settings</a>
+            </li>
+            <li>
+                <span class="title">Number of Shapes</span>
+                <div class="btn-group btn-group-justified" id="nbShapesControl" role="group" aria-label="...">
+                  <div class="btn-group" role="group">
+                    <button type="button" onclick="nbShapesAdd(false);" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Number of Shapes - 1"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                  </div>
+                  <div class="btn-group" role="group">
+                    <button data-toggle="tooltip" data-placement="bottom" title="Number of Shapes" type="button" id="nbShapesNumber" class="btn btn-default"></button>
+                  </div>
+                  <div class="btn-group" role="group">
+                    <button type="button" onclick="nbShapesAdd(true);" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Number of Shapes + 1"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+            </li>
+            <li>
+                <span class="title">Margin (px)</span>
+                <div class="btn-group btn-group-justified" id="margeControl" role="group" aria-label="...">
+                  <div class="btn-group" role="group">
+                    <button data-toggle="tooltip" data-placement="bottom" title="Margin (px) - 1" type="button" onclick="margeAdd(false);" class="btn btn-default"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                  </div>
+                  <div class="btn-group" role="group">
+                    <button data-toggle="tooltip" data-placement="bottom" title="Margin (px)" type="button" id="margeNumber" class="btn btn-default"></button>
+                  </div>
+                  <div class="btn-group" role="group">
+                    <button data-toggle="tooltip" data-placement="bottom" title="Margin (px) + 1" type="button" onclick="margeAdd(true);" class="btn btn-default"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+            </li>
+            <li>
+                <span class="title">Random controls</span>
+                <div class="btn-group btn-group-justified" id="controls" role="group" aria-label="...">
+                  <div class="btn-group" role="group">
+                    <button disabled="true" id="randomButton" data-toggle="tooltip" data-placement="bottom" title="Shuffle all forms" type="button" onclick="shuffleForms()" class="btn btn-default"><i class="fa fa-share-square-o" aria-hidden="true"></i></button>
+                  </div>
+                  <div class="btn-group" role="group">
+                    <button disabled="true" id="randomButton2" data-toggle="tooltip" data-placement="bottom" title="Shuffle all songs" type="button" onclick="shuffleSongs()" class="btn btn-default"><i class="fa fa-music" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+            </li>
+            <li>
+                <span class="title">Main controls</span>
+                <div class="btn-group btn-group-justified" id="controls" role="group" aria-label="...">
+                  <div class="btn-group" role="group">
+                    <button data-toggle="tooltip" data-placement="bottom" title="Save" type="button" onclick="$('#save').modal('show');" class="btn btn-default"><i class="fa fa-floppy-o" aria-hidden="true"></i></button>
+                  </div>
+                  <div class="btn-group" role="group">
+                    <button data-toggle="tooltip" data-placement="bottom" title="Main settings" type="button" onclick="loadSettings();$('#settings').modal('show');" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                  </div>
+                </div>
+            </li>
+                <span class="title">Toggle controls</span>
+            <li class="toggleton" id="toggle1">
+                <input autocomplete="off" data-toggle="toggle" data-height="35" data-width="60" type="checkbox" data-on="ON" data-off="OFF"> &nbsp; Click effect ?
+            </li>
+            <!--<li class="toggleton" id="toggle2">
+                <input autocomplete="off" data-toggle="toggle" data-height="35" data-width="60" type="checkbox" data-on="ON" data-off="OFF"> &nbsp; Toggle 2 ?
+            </li>
+            <li class="toggleton" id="toggle3">
+                <input autocomplete="off" data-toggle="toggle" data-height="35" data-width="60" type="checkbox" data-on="OFF" data-off="NON"> &nbsp; Toggle 3 ?
+            </li>
+            <li class="toggleton" id="toggle4">
+                <input autocomplete="off" data-toggle="toggle" data-height="35" data-width="60" type="checkbox" data-on="ON" data-off="OFF"> &nbsp; Toggle 4 ?
+            </li> 
+            <li class="toggleton" id="toggle5">
+                <input autocomplete="off" data-toggle="toggle" data-height="35" data-width="60" type="checkbox" data-on="ON" data-off="OFF"> &nbsp; Toggle 5 ?
+            </li>-->
+        </ul>
+    </nav>
+    
+    <!-- Main Container -->
+    <div id="main_container">
+        <div id="form1" class="shape hidden">
+            <svg id="canvas1"></svg> 
+        </div>
+        <div id="form2" class="shape hidden">
+            <svg id="canvas2"></svg>
+        </div>
+        <div id="form3" class="shape hidden">
+            <svg id="canvas3"></svg>
+        </div>
+        <div id="form4" class="shape hidden">
+            <svg id="canvas4"></svg>
+        </div>
+        <div id="form5" class="shape hidden">
+            <svg id="canvas5"></svg>
+        </div>
+        <div id="form6" class="shape hidden">
+            <svg id="canvas6"></svg>
+        </div>
+    </div>
+
+    <!-- Sources audio -->
+    <div id="sourcesAudio">
+        
+    </div>
+    
+    <!-- Modals -->
+    <div class="modal fade" id="settings" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Main Settings</h4>
+                </div>
+                <div class="modal-body" id="settingsBody">
+                </div>
+                <div class="modal-footer" id="settingsFooter">
+                    <button onclick="drawForms();" data-dismiss="modal" data-toggle="tooltip" data-placement="bottom" title="generate" type="button" class="btn btn-success">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                    </button>    
+                    <button data-toggle="tooltip" data-placement="bottom" title="close" type="button" class="btn btn-default" data-dismiss="modal">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    </button>                    
+                </div>
+            </div>
+        </div>
+    </div> 
+    <div class="modal fade" id="save" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Actions Saved</h4>
+                </div>
+                <div class="modal-body">
+                    <br>
+                    <div id="tableSaved"></div>
+                </div>                
+                <div class="modal-body">
+                    <p id="titleSaved" class="modal-title"></p>
+                </div>
+                <div class="modal-footer" id="saveFooter">
+    
+                    <!-- TextArea Hidden to copy-->
+                    <textarea class="persoHidden" id="excelInput"></textarea>
+                    <button id="buttonExcel" onclick="exportExcel()" data-toggle="tooltip" data-placement="bottom" title="excel" type="button" class="btn btn-success">
+                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    </button>      
+                    <button data-toggle="tooltip" data-placement="bottom" title="close" type="button" class="btn btn-default" data-dismiss="modal">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    </button>                    
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Toggle Javascript -->
+    <script src="js/toggle.js"></script>
+    
+    <!-- Variables Javascript -->
+    <script src="js/variables.js"></script>
+        
+    <!-- Actions Javascript -->
+    <script src="js/actions.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script>
+    // Closes the sidebar menu
+    $("#menu-close").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+    // Opens the sidebar menu
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+    // Scrolls to the selected menu item on the page
+    $(function() {
+        $('a[href*=#]:not([href=#],[data-toggle],[data-target],[data-slide])').click(function() {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                    return false;
+                }
+            }
+        });
+    });
+    //#to-top button appears after scrolling
+    var fixed = false;
+    $(document).scroll(function() {
+        if ($(this).scrollTop() > 250) {
+            if (!fixed) {
+                fixed = true;
+                // $('#to-top').css({position:'fixed', display:'block'});
+                $('#to-top').show("slow", function() {
+                    $('#to-top').css({
+                        position: 'fixed',
+                        display: 'block'
+                    });
+                });
+            }
+        } else {
+            if (fixed) {
+                fixed = false;
+                $('#to-top').hide("slow", function() {
+                    $('#to-top').css({
+                        display: 'none'
+                    });
+                });
+            }
+        }
+    });
+    </script>
+
+</body>
+
+</html>
